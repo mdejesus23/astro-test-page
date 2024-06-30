@@ -1,0 +1,115 @@
+---
+// import establishment from "../../Data/data.";
+import BaseLayout from "../../layout/BaseLayout.astro";
+import PageController from "../../components/PageController.astro";
+import Establishment from "../../components/Establishment";
+
+interface PaginateConfig {
+  pageSize: number;
+  params?: Record<string, any>;
+  base?: string;
+}
+
+type PaginateFunction = (
+  items: Item[],
+  config: PaginateConfig
+) => {
+  data: Item[];
+  start: number;
+  end: number;
+  size: number;
+  total: number;
+  currentPage: number;
+  lastPage: number;
+  url: {
+    current: string;
+    next: string;
+    prev: string;
+  };
+};
+
+interface Item {
+  id: string;
+  name: string;
+  country: string;
+  classification: string;
+}
+
+interface Props {
+  page: {
+    data: Item[];
+    start: number;
+    end: number;
+    size: number;
+    total: number;
+    currentPage: number;
+    lastPage: number;
+    url: {
+      current: string;
+      next?: string;
+      prev?: string;
+    };
+  };
+}
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: PaginateFunction;
+}) {
+  // Fetch establishment data
+  async function getEstablishment() {
+    try {
+      const response = await fetch(
+        "https://establishment-database-default-rtdb.firebaseio.com/establishment.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.json();
+      let establishment: Item[] = [];
+
+      for (const key in data) {
+        establishment.push({
+          id: key,
+          name: data[key].name,
+          country: data[key].country,
+          classification: data[key].classification,
+        });
+      }
+
+      return establishment;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  let establishmentData: Item[] | undefined;
+
+  try {
+    establishmentData = await getEstablishment();
+  } catch (error) {
+    establishmentData = [];
+  }
+
+  console.log(establishmentData);
+
+  // Return a paginated collection of paths for all posts
+  return paginate(establishmentData || [], {
+    pageSize: 10,
+  });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout>
+  <h1>FIND AN ESTABLISHMENT</h1>
+  <main>
+    <Establishment client:load page={page}>
+      <PageController page={page} />
+    </Establishment>
+  </main>
+</BaseLayout>

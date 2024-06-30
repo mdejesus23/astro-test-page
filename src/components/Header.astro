@@ -3,7 +3,10 @@
 ---
 
 <header>
-  <h1>Institution Databases</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/establishment">Establishment</a>
+  </nav>
 </header>
 
 <style>
@@ -12,5 +15,21 @@
     color: white;
     text-align: center;
     padding: 1rem 0;
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0 15px;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
   }
 </style>

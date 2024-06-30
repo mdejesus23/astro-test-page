@@ -1,0 +1,71 @@
+---
+interface Item {
+  id: string;
+  name: string;
+  country: string;
+  classification: string;
+}
+
+interface Props {
+  page: {
+    data: Item[];
+    start: number;
+    end: number;
+    size: number;
+    total: number;
+    currentPage: number;
+    lastPage: number;
+    url: {
+      current: string;
+      next?: string;
+      prev?: string;
+    };
+  };
+}
+
+const { page } = Astro.props;
+const currentPage: number = page.currentPage;
+const lastPage = page.lastPage;
+const pagesArr: number[] = Array.from({ length: lastPage }, (_, i) => i + 1);
+---
+
+<div class="page-controller">
+  {
+    page.url.prev ? (
+      <a class={page.url.prev ? "active" : "inactive"} href={page.url.prev}>
+        &#8249;
+      </a>
+    ) : (
+      <a class={page.url.prev ? "active" : "inactive"}>&#8249;</a>
+    )
+  }
+  <div class="dropdown">
+    <div class="dropdown-controller">
+      <button class="dropbtn">{`Pages ${currentPage}`}</button>
+      <p>{`of ${lastPage}`}</p>
+    </div>
+
+    <div class="dropdown-content">
+      {
+        pagesArr.map((pageNum) => (
+          <a
+            class="dropdown-opt"
+            id={`${pageNum}`}
+            href={`/establishment/${pageNum === 1 ? "" : pageNum}`}
+          >
+            {pageNum}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+  {
+    page.url.next ? (
+      <a class={page.url.next ? "active" : "inactive"} href={page.url.next}>
+        &#8250;
+      </a>
+    ) : (
+      <a class={page.url.next ? "active" : "inactive"}>&#8250;</a>
+    )
+  }
+</div>

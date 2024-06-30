@@ -34,7 +34,7 @@ h1 {
 }
 
 main {
-  height: 400px;
+  height: 600px;
 }
 
 table {
@@ -180,4 +180,43 @@ tr:hover {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* search form */
+.search-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.search-container h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+.search-form {
+  display: flex;
+  margin-bottom: 10px;
+}
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  font-size: 16px;
+}
+.search-button {
+  background-color: green;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+.search-button:hover {
+  background-color: rgb(4, 145, 4);
 }
